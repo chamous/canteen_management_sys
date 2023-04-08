@@ -1,0 +1,47 @@
+csv
+datetime
+pip install mysql-connector-python
+
+from flask import Flask
+from flask_mysqldb import MySQL
+
+app = Flask(__name__)
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'your-username'
+app.config['MYSQL_PASSWORD'] = 'your-password'
+app.config['MYSQL_DB'] = 'your-database-name'
+mysql = MySQL(app)
+
+
+    cursor.execute("""CREATE TABLE shifts (
+    shift_id INT NOT NULL AUTO_INCREMENT,
+    shift_name VARCHAR(20) NOT NULL,
+    shift_start TIME NOT NULL,
+    shift_end TIME NOT NULL,
+    PRIMARY KEY (shift_id)
+)
+""")
+
+    cursor.execute("""INSERT INTO shifts (shift_name, shift_start, shift_end)
+    VALUES 
+    ('1st SHIFT', '23:00:00', '07:00:00'),
+    ('2nd SHIFT', '07:00:00', '15:00:00'),
+    ('3rd SHIFT', '15:00:00', '23:00:00')
+       )
+    """)
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    hr_id = db.Column(db.String(10))
+    meals_id = db.Column(db.Integer, db.ForeignKey('meal.id'))
+    order_time = db.Column(db.DateTime)
+    meal = db.relationship('Meal', backref='orders')
+    ########################################"
+    CREATE TABLE orders (
+    orders_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    hr_id VARCHAR(255),
+    meals_id INT,
+    order_time DATETIME,
+    FOREIGN KEY (meals_id) REFERENCES meals (meals_id)
+);

@@ -1,0 +1,127 @@
+/* Use Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+
+/* Global Styles */
+body {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 100vh;
+  }
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .container {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #f5f5f5;
+  font-size: 1.2rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+input[type="submit"] {
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover {
+  background-color: #555;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f5f5f5;
+  font-size: 1.2rem;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.delete-btn {
+  background-color: #ff5757;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.delete-btn:hover {
+  background-color: #ff8787;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}
+
+.fade-in {
+  animation: fade-in 30s ease-in-out;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+</html>
+<!--start of Sidebare-->
+<section id="sidebar">
+    
+   <div class="seller">
+     <div class="sellerHead"><a href="#"><img src="/static/images/admin.png"></a>
+      <p class="center">THE ADMIN DASHBOARD</p>  
+      </div><!--sellerHead-->
+     
+    </div><!--seller-->
+   
+    <div id="sidebarNav">
+      <ul class="noToplLine">
+       <li><a href="/add_meal"><i class="fa fa-area-chart"></i>ADD MEALS</li>
+       <li><a href="/meals"><i class="fa fa-list-alt"></i>MEALS LIST</li>
+       <li><a href="/orders"><i class="fa fa-pencil-square-o"></i>ORDERS</li>
+      </ul>
+      <ul class="noBottomlLine">
+       <li><a href="#"><i class="fa fa-desktop"></i>Product Managerment</li>
+       <li><a href="#"><i class="fa fa-truck"></i>Ship Managerment</li>
+       <li><a href="#"><i class="fa fa-credit-card"></i>Price Managerment</li>
+     </ul>
+     </div><!----sidebarNav-->
+   </section><!------end of sidebar------>
+   
+   <!--start of MainConent-->
+   
+   <!--start of MainConent-->
+   <section id=content>
+     <div class="header">
+   <nav>
+    <div class="content">
+        <h1>Dashboard</h1>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br>
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description"><br>
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price"><br>
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image"><br>
+            <input type="submit" value="Add Meal">
+        </form>
+        
+        {% if error %}
+        <p>{{ error }}</p>
+        {% endif %}
+        
+        <h2>Meals</h2>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                </tr>
+                {% for meal in meals %}
+                <tr>
+                    <td>{{ meal.name }}</td>
+                    <td>{{ meal.description }}</td>
+                    <td>{{ meal.price }}</td>
+                    <td><img src="{{ meal.image.decode() }}" height="50"></td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <h2>Orders</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>HR ID</th>
+                    <th>Meal</th>
+                </tr>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.name }}</td>
+                    <td>{{ order.hr_id }}</td>
+                    {% for meal in meals %}
+                    <td>{{ meal.meals_id }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+        <form method="get" action="{{ url_for('download_csv') }}">
+            <input type="submit" value="Dawnload file">
+        </form>
+    </div>            
+
+    
+    </section> <!--end ofwrap for 3 tabcontent-->    
+   
+     
+
+   
+   <footer>
+   
+   </footer>

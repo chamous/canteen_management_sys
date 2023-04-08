@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Manager</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='user_manager.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1>User Manager</h1>
+      <hr>
+      <div class="table-box">
+        <h2>Current Users</h2>
+        {% if message %}
+        <p>{{ message }}</p>
+        {% else %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>{{ user['id'] }}</td>
+              <td>{{ user['name'] }}</td>
+              <td>{{ user['password'] }}</td>
+              <td>
+                <form action="/update_user/{{ user['id'] }}" method="POST">
+                  <button class="update-btn" type="submit">Update</button>
+                </form>
+                <form action="/delete_user/{{ user.id }}" method="POST">
+                  <button class="delete-btn" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
+      <hr>
+      <div class="form-box">
+        <h2>Add User</h2>
+        <form action="/add_user" method="POST">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" required>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+          <br>
+          <button class="add-btn" type="submit">Add User</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canteen Management System</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('login') }}">Home</a></li>
+            {% if session.logged_in %}
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

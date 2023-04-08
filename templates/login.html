@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/static/login.css">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <button onclick="window.location.href='/';" class="custom-btn btn-16">Home</button>
+  </head>
+  <body>
+    <div class="container">
+      <form method="post" action="{{ url_for('login') }}">
+        <h1>Login</h1>
+        {% if error %}
+          <p class="error">{{ error }}</p>
+        {% endif %}
+        <label>Username:</label>
+        <input type="text" name="username">
+        <label>Password:</label>
+        <input type="password" name="password">
+        <input type="submit" value="Login">
+      </form>
+    </div>
+  </body>
+</html>

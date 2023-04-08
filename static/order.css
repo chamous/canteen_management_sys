@@ -1,0 +1,95 @@
+.heroOrder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url('/static/images/ticket.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.order-form {
+  max-width: 600px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 40px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f5f5f5;
+}
+
+.meals-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.meal-card {
+  width: 45%;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.meal-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
+}
+
+.meal-details {
+  padding: 10px;
+}
+
+.meal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.meal-price {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #888;
+}
+
+.meal-select {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.meal-select input[type="radio"] {
+  margin-right: 5px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #0069d9;
+}

@@ -1,0 +1,18 @@
+<!-- order.html -->
+{% extends "base.html" %}
+{% block content %}
+<h1>Order</h1>
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+<form method="POST" action="{{ url_for('order') }}">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="text" name="hr_id" placeholder="HR-ID" required>
+    <select name="meal" required>
+        {% for meal in meals %}
+        <option value="{{ meal.id }}">{{ meal.name }} - {{ meal.price }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Order</button>
+</form>
+{% endblock %}
