@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>User Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='user_manager.css') }}">
   </head>
   <body>
@@ -27,11 +28,21 @@
             <tr>
               <td>{{ user['id'] }}</td>
               <td>{{ user['name'] }}</td>
-              <td>{{ user['password'] }}</td>
+              <td>
+                <input type="password" id="password{{ user['id'] }}" name="password" value="{{ user['password'] }}" readonly>
+                <span class="toggle-password" onclick="togglePassword({{ user['id'] }})"><i class="fas fa-eye"></i></span>
+              </td>
               <td>
                 <form action="/update_user/{{ user['id'] }}" method="POST">
-                  <button class="update-btn" type="submit">Update</button>
-                </form>
+                  <label for="username">New Username:</label>
+                  <input type="text" id="username" name="username" required>
+                  <label for="password">New Password:</label>
+                  <input type="password" id="new-password" name="password" required>
+                  <input type="hidden" name="update_field" id="update-field" value="">
+                  <button class="update-btn" type="submit" onclick="setUpdateField('username')">Update Username</button>
+                  <button class="update-btn" type="submit" onclick="setUpdateField('password')">Update Password</button>
+              </form>
+                
                 <form action="/delete_user/{{ user.id }}" method="POST">
                   <button class="delete-btn" type="submit">Delete</button>
                 </form>
@@ -41,7 +52,7 @@
           </tbody>
         </table>
         {% endif %}
-      </div>
+      
       <hr>
       <div class="form-box">
         <h2>Add User</h2>
@@ -55,5 +66,25 @@
         </form>
       </div>
     </div>
+    </div>
+    <script>
+          function setUpdateField(field) {
+        document.getElementById("update-field").value = field;
+    }
+      function togglePassword(userId) {
+        var passwordInput = document.getElementById("password" + userId);
+        var toggleIcon = document.querySelector("#password" + userId + " + .toggle-password i");
+      
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleIcon.classList.remove("fa-eye");
+          toggleIcon.classList.add("fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          toggleIcon.classList.remove("fa-eye-slash");
+          toggleIcon.classList.add("fa-eye");
+        }
+      }
+      </script>
   </body>
 </html>

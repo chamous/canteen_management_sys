@@ -12,11 +12,15 @@ h1 {
 /* Form Styles */
 form {
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 29px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 66px;
-  padding: 100px;
+  margin: 139px;
+  padding: 85px;
   width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 label {
@@ -114,7 +118,7 @@ tr:nth-child(even) {
 @media only screen and (min-width: 1200px) {
   /* Form Styles */
   form {
-      max-width: 1200px;
+      max-width: 786px;
   }
 
   /* Table Styles */
@@ -145,7 +149,7 @@ a{
 
 /* typography-------*/
 h1{
- font: lighter normal 1.3em/1.2em "robotobold", sans-serif;
+ font: lighter bold 4em/5em "robotobold", sans-serif;
 }
 h2{
   font: lighter normal 0.8em/2em "robotobold", sans-serif;
@@ -155,7 +159,7 @@ h2{
 /*seciton: sidebar----------------------------------------*/
 #sidebar{
   width:350px;
-  height:1009px;
+  height:1259px;
   float:left;
   background:#4b6c8b;
 }
@@ -167,7 +171,7 @@ h2{
 }
 
 #sidebarNav ul li{
-  width:100%;
+  width:124px;
   margin:0px;
   padding-left:30px;
 }
@@ -994,3 +998,9 @@ thead, tbody > tr{
 	background-size: cover;
 }
 
+button {
+  position: fixed;
+  bottom: 70px;
+  left: 55%;
+  transform: translateX(-50%);
+}

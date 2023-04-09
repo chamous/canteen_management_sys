@@ -45,3 +45,15 @@ class Order(db.Model):
     order_time DATETIME,
     FOREIGN KEY (meals_id) REFERENCES meals (meals_id)
 );
+
+#####################################
+import pyodbc
+
+# Set the connection parameters
+SERVER = 'localhost'
+DATABASE = 'canteen'
+USERNAME = 'sa'
+PASSWORD = 'password'
+
+# Connect to the SQL Server database
+cnx = pyodbc.connect(f"DRIVER={{SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}")

@@ -98,7 +98,7 @@ def add_mealPage():
     return render_template("add_meal.html")
 
  # render GET_MEAL page
-@app.route("/meals", methods=['GET', 'POST'])
+@app.route("/meals", methods=["GET", "POST"])
 def get_mealPage():
     cursor = cnx.cursor()
     if not session.get("logged_in"):
@@ -218,6 +218,32 @@ def user_list():
         message = 'There are no users to display'
 
     return render_template('user_manager.html', users=users, message=message)
+
+@app.route('/update_user/<int:user_id>', methods=['POST'])
+def update_user(user_id):
+    if session.get("username") != "superadmin":
+        abort(401)
+
+    cursor = cnx.cursor()
+
+    if 'password' in request.form:
+        # Update password
+        new_password = request.form.get('password')
+        update_password_query = "UPDATE users SET password=%s WHERE id=%s"
+        cursor.execute(update_password_query, (new_password, user_id))
+
+    if 'new_username' in request.form:
+        # Update username
+        new_username = request.form.get('new_username')
+        update_username_query = "UPDATE users SET username=%s WHERE id=%s"
+        cursor.execute(update_username_query, (new_username, user_id))
+
+    cnx.commit()
+    cursor.close()
+
+    return redirect(url_for('user_list'))
+
+
 
 
 @app.route('/delete_user/<int:user_id>', methods=['POST'])

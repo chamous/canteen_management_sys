@@ -49,7 +49,7 @@
                       </tr>
                       {% for meal in meals %}
                       <tr>
-                          <td>{{ meal[.name] }}</td>
+                          <td>{{ meal.name }}</td>
                           <td>{{ meal.description }}</td>
                           <td>{{ meal.price }}</td>
                           <td><img src="{{ meal.image.decode() }}" height="50"></td>

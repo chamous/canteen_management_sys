@@ -21,14 +21,15 @@ body {
   }
 
   .container {
-    margin: 20px auto;
+    margin: 100px auto;
     width: 80%;
     max-width: 1200px;
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 120px;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   }
+  
 
 h1 {
   text-align: center;
@@ -53,9 +54,9 @@ select {
   margin-bottom: 1rem;
   border-radius: 5px;
   border: none;
-  background-color: #f5f5f5;
+  background-color: #a8cdf3;
   font-size: 1.2rem;
-  width: 100%;
+  width: 50%;
   max-width: 400px;
 }
 
