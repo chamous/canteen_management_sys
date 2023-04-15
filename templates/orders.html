@@ -6,32 +6,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 </html>
+<body>
 <!--start of Sidebare-->
-<section id="sidebar">
-    
-   <div class="seller">
-     <div class="sellerHead"><a href="#"><img src="/static/images/admin.png"></a>
-      <p class="center">THE ADMIN DASHBOARD</p>  
-      </div><!--sellerHead-->
-     
-    </div><!--seller-->
-   
-    <div id="sidebarNav">
-      <ul class="noToplLine">
-       <li><a href="/add_meal"><i class="fa fa-area-chart"></i>ADD MEAL</li>
-       <li><a href="/meals"><i class="fa fa-list-alt"></i>MEALS LIST</li>
-       <li><a href="#"><i class="fa fa-pencil-square-o"></i>Orders</li>
-      </ul>
-      <ul class="noBottomlLine">
-       <li><a href="#"><i class="fa fa-desktop"></i>Product Managerment</li>
-       <li><a href="#"><i class="fa fa-truck"></i>Ship Managerment</li>
-       <li><a href="/log_out" class="fa fa-pencil-square-o">Logout</li>
-     </ul>
-     </div><!----sidebarNav-->
-   </section><!------end of sidebar------>
-   
-   <!--start of MainConent-->
-   
+    <!--start of Sidebare-->
+    <section id="sidebar">
+      <div class="seller">
+          <div class="sellerHead">
+              <a href="#"><img src="/static/images/admin.png"></a>
+              <p class="center">THE ADMIN DASHBOARD</p>
+          </div><!--sellerHead-->
+      </div><!--seller-->
+      <div id="sidebarNav">
+          <ul class="noToplLine">
+              <li><a href="/dashboard"><i class="fa fa-area-chart"></i>ADD MEALS</a></li>
+              <li><a href="/meals"><i class="fa fa-area-chart"></i>MEALS LIST</a></li>
+              <li><a href="/orders"><i class="fa fa-area-chart"></i>ORDERS</a></li>
+              <li><a href="/log_out"><i class="fa fa-area-chart"></i>Logout</a></li>
+          </ul>
+      </div>
+  </section>
+  </section>   
    <!--start of MainConent-->
    <section id=content>
      <div class="header">
@@ -39,7 +33,7 @@
     <div class="heroMeals">
         <h1>Dashboard</h1>
             <h2>Orders</h2>
-            <table>
+            <table id="order-table">
               <tr>
                   <th>Name</th>
                   <th>HR ID</th>
@@ -50,28 +44,20 @@
                   <td style="color: rgb(8, 8, 8)"> {{ order.name }}</td>
                   <td style="color: rgb(8, 8, 8)"> {{ order.hr_id }}</td>
                   <td style="color: rgb(8, 8, 8)">
-                      {% for meal in meals if meal.id == order.meals_id %}
+                      {% for meal in meals if meal.meals_id == order.meals_id %}
                           {{ meal.name }}
                       {% endfor %}
                   </td>
               </tr>
               {% endfor %}
           </table>
-          
-          
         </div>
-        
-        <form method="get" action="{{ url_for('download_csv') }}">
+        <form method="get" action="{{ url_for('download_csv') }}" style="position: absolute; left: 50% ; top: 75%; margin: 137px !important;
+        padding: 28px !important; max-width: 310px !important;">
             <input type="submit" value="Dawnload file">
         </form>
-    </div>            
-
-    
-    </section> <!--end ofwrap for 3 tabcontent-->    
-   
-     
-
-   
+    </div>  
+    </section>       
+      </body>
    <footer>
-   
    </footer>

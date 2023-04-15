@@ -8,22 +8,21 @@
 </html>
 <!--start of Sidebare-->
 <section id="sidebar">
-    
-   <div class="seller">
-     <div class="sellerHead"><a href="#"><img src="/static/images/admin.png"></a>
-      <p class="center">THE ADMIN DASHBOARD</p>  
+  <div class="seller">
+      <div class="sellerHead">
+          <a href="#"><img src="/static/images/admin.png"></a>
+          <p class="center">THE ADMIN DASHBOARD</p>
       </div><!--sellerHead-->
-     
-    </div><!--seller-->
-   
-    <div id="sidebarNav">
+  </div><!--seller-->
+  <div id="sidebarNav">
       <ul class="noToplLine">
-       <li><a href="/add_meal"><i class="fa fa-area-chart"></i>ADD MEALS</li>
-       <li><a href="/meals"><i class="fa fa-list-alt"></i>MEALS LIST</li>
-       <li><a href="/orders"><i class="fa fa-pencil-square-o"></i>ORDERS</li>
+          <li><a href="/dashboard"><i class="fa fa-area-chart"></i>ADD MEALS</a></li>
+          <li><a href="/meals"><i class="fa fa-area-chart"></i>MEALS LIST</a></li>
+          <li><a href="/orders"><i class="fa fa-area-chart"></i>ORDERS</a></li>
+          <li><a href="/log_out"><i class="fa fa-area-chart"></i>Logout</a></li>
       </ul>
-     </div><!----sidebarNav-->
-   </section><!------end of sidebar------>
+  </div>
+</section>
    
    <!--start of MainConent-->
    
@@ -33,8 +32,7 @@
    <nav>
     <div class="heroMeals">
         <h1>Dashboard</h1>
-        
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name"><br>
             <label for="description">Description:</label>
@@ -45,12 +43,11 @@
             <input type="file" id="image" name="image"><br>
             <input type="submit" value="Add Meal">
         </form>
-        
         {% if error %}
         <p>{{ error }}</p>
         {% endif %}
-        
-    </div>            
+    </div>
+    
 
     
     </section> <!--end ofwrap for 3 tabcontent-->    

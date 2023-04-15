@@ -1,21 +1,21 @@
-from flask import Flask, render_template, request, redirect, url_for, session, make_response, send_file,abort
-from database import cnx, create_tables, add_meal, get_meals, add_order, get_orders, check_order_limit, get_next_id,add_user
+from flask import Flask, render_template, request
+from flask import redirect, url_for, session, make_response, abort
+from database import cnx, create_tables, add_meal, get_meals
+from database import add_order, get_orders, get_next_id, add_user
 import secrets
 import csv
 import serial
-
+import io
 HOST_NAME = 'localhost'
 HOST_PORT = 5000
-
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 with app.test_client() as client:
-    with client.session_transaction() as session:
-        session['key'] = app.secret_key
+    with client.session_transaction() as _:
+        _['key'] = app.secret_key
+# render HOME pageclear
 
 
-
-#render HOME page
 @app.route("/")
 def home():
     return render_template("home.html")
@@ -23,18 +23,21 @@ def home():
 
 def authenticate(username, password):
     cursor = cnx.cursor()
-    cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+    cursor.execute("SELECT * FROM users "
+                    "WHERE username = %s "
+                    "AND password = %s", (username, password))
     user = cursor.fetchone()
     cursor.close()
     if user:
         return True
     else:
         return False
+# render login page
 
 
-#render login page
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    cursor = cnx.cursor()
     error = None
     if session.get("logged_in"):
         return redirect(url_for("dashboard"))
@@ -70,7 +73,6 @@ def login():
     return render_template("login.html", error=error)
 
 
-
 @app.route("/log_out", methods=["GET"])
 def log_out():
     session.pop("logged_in", None)
@@ -78,9 +80,10 @@ def log_out():
     return redirect(url_for("login"))
 
 # render add_meal page
+
+
 @app.route("/add_meal", methods=["GET", "POST"])
 def add_mealPage():
-    cursor = cnx.cursor()
     if not session.get("logged_in"):
         return redirect(url_for("login"))
     if request.method == "POST":
@@ -95,31 +98,36 @@ def add_mealPage():
             error = "Failed to add meal"
     else:
         error = None
-    return render_template("add_meal.html")
+    return render_template("add_meal.html", error=error)
 
- # render GET_MEAL page
+
+# render GET_MEAL page
+
+
 @app.route("/meals", methods=["GET", "POST"])
 def get_mealPage():
-    cursor = cnx.cursor()
     if not session.get("logged_in"):
         return redirect(url_for("login"))
     meals = get_meals()
     return render_template("meals.html", meals=meals)
 
 # render GET_ORDER page
+
+
 @app.route("/orders", methods=["GET", "POST"])
 def OrderPage():
-    cursor = cnx.cursor()
     if not session.get("logged_in"):
         return redirect(url_for("login"))
     meals = get_meals()
     orders = get_orders()
     return render_template("orders.html", meals=meals, orders=orders)
 
+
 # render DASGBOARD page
+
+
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
-    cursor = cnx.cursor()
     if not session.get("logged_in"):
         return redirect(url_for("login"))
 
@@ -135,26 +143,32 @@ def dashboard():
 
 @app.route("/order", methods=["GET", "POST"])
 def order():
+    order = ("name", "hr_id","meals_id")  # Define the order variable outside of the if statement block
     if request.method == "POST":
         name = request.form["name"]
         hr_id = request.form["hr_id"]
-        meals_id = get_next_id(cnx.cursor(), "meals")
+        meals_id = request.form["meals_id"]
         if add_order(name, hr_id, meals_id):
-
             return redirect(url_for("order"))
+            print_order(order)
         else:
             error = "Failed to place order"
     else:
         error = None
 
     meals = get_meals()
+    print_order(order)
     return render_template("order.html", meals=meals, error=error)
+
 
 @app.route("/download-orders")
 def download_orders():
     orders = get_orders()
     headers = ["Order ID", "Name", "HR ID", "Meal ID", "Order Time"]
-    rows = [(order["orders_id"], order["name"], order["hr_id"], order["meals_id"], order["order_time"]) for order in orders]
+    rows = [(
+        order["orders_id"], order["name"], order["hr_id"],
+        order["meals_id"], order["order_time"])
+        for order in orders]
     csv_data = io.StringIO()
     writer = csv.writer(csv_data)
     writer.writerow(headers)
@@ -165,11 +179,15 @@ def download_orders():
     response.headers["Content-type"] = "text/csv"
     return response
 
+
 @app.route('/download_csv')
 def download_csv():
     orders = get_orders()
     headers = ["Order ID", "Name", "HR ID", "Meal ID", "Order Time"]
-    rows = [(order["orders_id"], order["name"], order["hr_id"], order["meals_id"], order["order_time"]) for order in orders]
+    rows = [(
+        order["orders_id"], order["name"], order["hr_id"],
+        order["meals_id"], order["order_time"])
+        for order in orders]
     csv_data = io.StringIO()
     writer = csv.writer(csv_data)
     writer.writerow(headers)
@@ -179,6 +197,7 @@ def download_csv():
     response.headers["Content-Disposition"] = "attachment; filename=orders.csv"
     response.headers["Content-type"] = "text/csv"
     return response
+
 
 @app.route("/add_user", methods=["GET", "POST"])
 def add_user_page():
@@ -219,6 +238,7 @@ def user_list():
 
     return render_template('user_manager.html', users=users, message=message)
 
+
 @app.route('/update_user/<int:user_id>', methods=['POST'])
 def update_user(user_id):
     if session.get("username") != "superadmin":
@@ -244,8 +264,6 @@ def update_user(user_id):
     return redirect(url_for('user_list'))
 
 
-
-
 @app.route('/delete_user/<int:user_id>', methods=['POST'])
 def delete_user(user_id):
     if session.get("username") != "superadmin":
@@ -258,22 +276,26 @@ def delete_user(user_id):
 
     return redirect(url_for('user_list'))
 
+
 def print_order(order):
+    order = ("name", "hr_id","meals_id")
     # Connect to the printer using serial communication
     ser = serial.Serial('COM1', baudrate=9600, timeout=1)
-    ser.write(b'\x1b\x40') # Initialize the printer
+    ser.write(b'\x1b\x40')  # Initialize the printer
 
     # Set the label format and position
-    ser.write(b'\x1b\x69\x01\x01') # Set label format to 1x1 inch
-    ser.write(b'\x1b\x6c\x08') # Set label position to 8 mm from the top
+    ser.write(b'\x1b\x69\x01\x01')  # Set label format to 1x1 inch
+    ser.write(b'\x1b\x6c\x08')  # Set label position to 8 mm from the top
 
     # Print the order details on the label
-    ser.write(b'\x1b\x21\x10') # Set font size to double-height and double-width
-    ser.write(b'\n'.join([f.encode() for f in order])) # Print the order details on separate lines
+    # Set font size to double-height and double-width
+    ser.write(b'\x1b\x21\x10')
+    # Print the order details on separate lines
+    ser.write(b'\n'.join([f.encode() for f in order]))
 
     # Finish and disconnect the printer
-    ser.write(b'\x1b\x45') # Turn on the cutter
-    ser.write(b'\x1b\x66\x00') # Cut the label
+    ser.write(b'\x1b\x45')  # Turn on the cutter
+    ser.write(b'\x1b\x66\x00')  # Cut the label
     ser.close()
 
 

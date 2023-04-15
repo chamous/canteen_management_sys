@@ -18,7 +18,7 @@ form {
   padding: 85px;
   width: 100%;
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -159,7 +159,7 @@ h2{
 /*seciton: sidebar----------------------------------------*/
 #sidebar{
   width:350px;
-  height:1259px;
+  height:1008px;
   float:left;
   background:#4b6c8b;
 }
@@ -180,16 +180,16 @@ h2{
   background-color: #3d5b77;
   border: 1px solid #2f4c67;
   border-left: 4px solid #07a9e1;
-  box-shadow: inset 0px 0px 7px -2px #353535
+  box-shadow: inset 0px 0px 7px -2px #353535;
   
   -webkit-transition: all ease 0.3s;
   -moz-transition: all ease 0.3s;
-  -o-transition: all ease 0.3s;
+  -o-transition : all ease 0.3s;
   transition: all ease 0.3s;
 }
 
 #sidebarNav ul li:hover{
-    background-color: #54789a;
+  background-color: #54789a;
   -webkit-transition: all ease 0.3s;
   -moz-transition: all ease 0.3s;
   -o-transition: all ease 0.3s;

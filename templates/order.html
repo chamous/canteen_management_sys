@@ -9,15 +9,16 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
   <body>
-    <h1>Order</h1>
+    <div class="heroOrder">
+      <h1>Order</h1>
+      <button onclick="window.location.href='/';" class="custom-btn btn-1">Home</button>
+    </div>
     <div class="heroOrder">
       <div>
         <form method="POST" action="{{ url_for('order') }}" class="order-form">
-          <div class="form-group">
+          <div style="margin-top : -305px">
             <label for="inputName">Your Name</label>
             <input type="text" name="name" id="inputName" class="form-control" placeholder="Your Name" required>
-          </div>
-          <div class="form-group">
             <label for="inputHrId">HR-ID</label>
             <input type="text" name="hr_id" id="inputHrId" class="form-control" placeholder="HR-ID" required>
           </div>
@@ -26,10 +27,12 @@
               <div class="meal-card" onclick="selectMeal(this)">
                 <img src="{{ meal.image.decode() }}" alt="{{ meal.name }}" class="card-img-top">
                 <div class="meal-details">
-                  <h5 class="meal-title">{{ meal.name }} TND </h5>
+                  <h5 class="meal-title">{{ meal.name }} </h5>
+                  <h9 class="meal-price">{{ meal.description }} </h9>
                   <p class="meal-price">{{ meal.price }} TND </p>
+                  <p class="meal-price">{{ meal.measl_id }}</p>
                   <div class="meal-select">
-                    <input type="radio" name="meals_id" id="{{ meal.id }}" value="{{ meal.id }}" required>
+                    <input type="radio" name="meals_id" id="{{ meal.meals_id }}" value="{{ meal.meals_id }}" required>
                     <label for="{{ meal.id }}">Select</label>
                   </div>
                 </div>
@@ -45,7 +48,6 @@
     <script>
       // Get all the meal cards
       const mealCards = document.querySelectorAll('.meal-card');
-
       // Loop through each card and add a click event listener
       mealCards.forEach(card => {
         const radioBtn = card.querySelector('input[type="radio"]');
