@@ -1004,3 +1004,9 @@ button {
   left: 55%;
   transform: translateX(-50%);
 }
+.Button {
+    background-color: #ff0000;
+    color: #080808;
+    padding: 6px 12px;
+    cursor: pointer;
+}

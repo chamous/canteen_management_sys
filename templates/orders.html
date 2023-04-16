@@ -38,6 +38,7 @@
                   <th>Name</th>
                   <th>HR ID</th>
                   <th>Meal</th>
+                  <th>Order Time</th>
               </tr>
               {% for order in orders %}
               <tr>
@@ -48,6 +49,7 @@
                           {{ meal.name }}
                       {% endfor %}
                   </td>
+                  <td style="color: rgb(8, 8, 8)"> {{ order.order_time }}</td>
               </tr>
               {% endfor %}
           </table>

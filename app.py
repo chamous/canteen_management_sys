@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, jsonify
 from flask import redirect, url_for, session, make_response, abort
-from database import cnx, create_tables, add_meal, get_meals
-from database import add_order, get_orders, get_next_id, add_user
+from database import cnx, create_tables, add_meal, get_meals, check_order_limit
+from database import add_order, get_orders, get_next_id, add_user, delete_meal_by_id
 import secrets
 import csv
 import serial
@@ -101,6 +101,15 @@ def add_mealPage():
     return render_template("add_meal.html", error=error)
 
 
+@app.route("/delete_meal/<int:id>", methods=["DELETE"])
+def delete_meal(id):
+    if delete_meal_by_id(id):
+        flash("Meal deleted successfully", "success")
+    else:
+        flash("Failed to delete meal", "danger")
+    return jsonify({"success": True})
+
+
 # render GET_MEAL page
 
 
@@ -143,22 +152,25 @@ def dashboard():
 
 @app.route("/order", methods=["GET", "POST"])
 def order():
-    order = ("name", "hr_id","meals_id")  # Define the order variable outside of the if statement block
     if request.method == "POST":
         name = request.form["name"]
         hr_id = request.form["hr_id"]
         meals_id = request.form["meals_id"]
-        if add_order(name, hr_id, meals_id):
-            return redirect(url_for("order"))
-            print_order(order)
+
+        # Check if the user has already placed an order
+        if check_order_limit(name):
+            error = "You have already placed an order in this shift"
         else:
-            error = "Failed to place order"
+            if add_order(name, hr_id, meals_id):
+                return redirect(url_for("order"))
+            else:
+                error = "Failed to place order"
     else:
         error = None
 
     meals = get_meals()
-    print_order(order)
     return render_template("order.html", meals=meals, error=error)
+
 
 
 @app.route("/download-orders")
@@ -278,7 +290,7 @@ def delete_user(user_id):
 
 
 def print_order(order):
-    order = ("name", "hr_id","meals_id")
+    order = ("name", "hr_id", "meals_id")
     # Connect to the printer using serial communication
     ser = serial.Serial('COM1', baudrate=9600, timeout=1)
     ser.write(b'\x1b\x40')  # Initialize the printer

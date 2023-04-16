@@ -1,5 +1,6 @@
 import mysql.connector
 import datetime
+import os
 
 HOST = 'localhost'
 PORT = 3306
@@ -45,6 +46,12 @@ def create_tables():
         password TEXT NOT NULL
         )
     """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS roles (
+        role_id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+        role_name TEXT NOT NULL
+        )
+    """)
     cnx.commit()
 
 
@@ -72,30 +79,6 @@ def get_meals():
     return meals
 
 
-def add_order(name, hr_id, meals_id):
-    if check_order_limit(name):
-        return False
-    cursor = cnx.cursor()
-    orders_id = get_next_id(cursor, "orders")
-    # insert order data into the database
-    add_order_query = (
-        "INSERT INTO orders (orders_id, name, hr_id,meals_id, order_time) "
-        "VALUES (%s, %s, %s, %s, NOW())")
-    order_data = (orders_id, name, hr_id, meals_id)
-    cursor.execute(add_order_query, order_data)
-    cnx.commit()
-    return True
-
-
-def get_orders():
-    cursor = cnx.cursor(dictionary=True)
-    # retrieve all orders from the database
-    query = "SELECT * FROM orders ORDER BY order_time DESC LIMIT 10"
-    cursor.execute(query)
-    orders = cursor.fetchall()
-    return orders
-
-
 # Here we check the order time then we check its shift
 
 
@@ -113,7 +96,7 @@ def check_order_limit(name):
         + datetime.timedelta(days=1)
     ]
     cursor = cnx.cursor()
-    order_limit = 1  # maximum number of orders allowed per shift
+    order_limit = 1
     for i in range(3):
         shift_start = shift_starts[i]
         shift_end = shift_ends[i]
@@ -129,6 +112,61 @@ def check_order_limit(name):
             if result[0] >= order_limit:
                 return True
     return False
+
+
+
+def add_order(name, hr_id, meals_id):
+    cursor = cnx.cursor()
+
+    # Check if the user has already placed an order during the current shift
+    if check_order_limit(name):
+        return False
+
+    # Add the order to the database
+    query = "INSERT INTO orders (name, hr_id, meals_id, order_time) VALUES (%s, %s, %s, %s)"
+    data = (name, hr_id, meals_id, datetime.datetime.now())
+    cursor.execute(query, data)
+    cnx.commit()
+
+    cursor.close()
+    return True
+
+
+
+
+def delete_meal_by_id(meals_id):
+    try:
+        # Delete meal from meals table
+        cursor = cnx.cursor()
+        delete_meal_query = "DELETE FROM meals WHERE meals_id = %s"
+        cursor.execute(delete_meal_query, (meals_id,))
+        cnx.commit()
+
+        # Delete meal image from server
+        meal = get_meals(id)
+        if meal is not None:
+            os.remove(meal.image_path)
+
+        # Close database connection
+        cnx.close()
+
+        return True
+    except Exception as e:
+        print("Failed to delete meal:", e)
+        return False
+
+
+def get_orders(name=None):
+    cursor = cnx.cursor(dictionary=True)
+    if name:
+        query = "SELECT * FROM orders WHERE name = %s"
+        cursor.execute(query, (name,))
+    else:
+        query = "SELECT * FROM orders ORDER BY order_time DESC LIMIT 10"
+        cursor.execute(query)
+    orders = cursor.fetchall()
+    cursor.close()
+    return orders
 
 
 def get_next_id(cursor, table_name):

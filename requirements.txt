@@ -57,3 +57,4 @@ PASSWORD = 'password'
 
 # Connect to the SQL Server database
 cnx = pyodbc.connect(f"DRIVER={{SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}")
+INSERT INTO roles (role_name) VALUES ('user'), ('admin'), ('superadmin');

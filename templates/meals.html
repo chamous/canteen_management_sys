@@ -5,61 +5,79 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-</html>
+<body>
     <!--start of Sidebare-->
     <section id="sidebar">
-      <div class="seller">
-          <div class="sellerHead">
-              <a href="#"><img src="/static/images/admin.png"></a>
-              <p class="center">THE ADMIN DASHBOARD</p>
-          </div><!--sellerHead-->
-      </div><!--seller-->
-      <div id="sidebarNav">
-          <ul class="noToplLine">
-              <li><a href="/dashboard"><i class="fa fa-area-chart"></i>ADD MEALS</a></li>
-              <li><a href="/meals"><i class="fa fa-area-chart"></i>MEALS LIST</a></li>
-              <li><a href="/orders"><i class="fa fa-area-chart"></i>ORDERS</a></li>
-              <li><a href="/log_out"><i class="fa fa-area-chart"></i>Logout</a></li>
-          </ul>
-      </div>
-  </section>
+        <div class="seller">
+            <div class="sellerHead">
+                <a href="#"><img src="/static/images/admin.png"></a>
+                <p class="center">THE ADMIN DASHBOARD</p>
+            </div><!--sellerHead-->
+        </div><!--seller-->
+        <div id="sidebarNav">
+            <ul class="noToplLine">
+                <li><a href="/dashboard"><i class="fa fa-area-chart"></i>ADD MEALS</a></li>
+                <li><a href="/meals"><i class="fa fa-area-chart"></i>MEALS LIST</a></li>
+                <li><a href="/orders"><i class="fa fa-area-chart"></i>ORDERS</a></li>
+                <li><a href="/log_out"><i class="fa fa-area-chart"></i>Logout</a></li>
+            </ul>
+        </div>
+    </section>
      
-     <!--start of MainConent-->
-   
-   <!--start of MainConent-->
-   <section id=content>
-     <div class="header">
-   <nav>
-    <div class="heroMeals">
-        <h1>Dashboard</h1>
-        <h2>Meals</h2>
-        <div class="mealTable">
-                  <table>
-                      <tr>
-                          <th>Name</th>
-                          <th>Description</th>
-                          <th>Price</th>
-                          <th>Image</th>
-                      </tr>
-                      {% for meal in meals %}
-                      <tr>
-                          <td>{{ meal.name }}</td>
-                          <td>{{ meal.description }}</td>
-                          <td>{{ meal.price }}</td>
-                          <td><img src="{{ meal.image.decode() }}" height="50"></td>
-                      </tr>
-                      {% endfor %}
-                  </table>
-          </div>
-
-    </div>            
-
+    <!--start of MainConent-->
+    <section id="content">
+        <div class="header">
+            <nav>
+                <div class="heroMeals">
+                    <h1>Dashboard</h1>
+                    <h2>Meals</h2>
+                    <div class="mealTable">
+                        <table>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Image</th>
+                                <th>Action</th>
+                            </tr>
+                            {% for meal in meals %}
+                            <tr>
+                                <td>{{ meal.name }}</td>
+                                <td>{{ meal.description }}</td>
+                                <td>{{ meal.price }}</td>
+                                <td><img src="{{ meal.image.decode() }}" height="50"></td>
+                                <td type="button" onclick="deleteMeal({ meal.meals_id })" class="Button">Delete</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </section> <!--end of content-->
     
-    </section> <!--end ofwrap for 3 tabcontent-->    
-   
-     
+    <footer>
+    </footer>
 
-   
-   <footer>
-   
-   </footer>
+    <script>
+        function deleteMeal(meals_id) {
+    fetch("/delete_meal/" + meals_id, {
+        method: "DELETE",
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Reload the page to update the meal list
+            location.reload();
+        } else {
+            // Display an error message
+            alert("Failed to delete meal");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Failed to delete meal");
+    });
+}
+    </script>
+</body
